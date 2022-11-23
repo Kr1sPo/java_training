@@ -8,33 +8,23 @@ import ru.stqa.pft.addressbook.model.ContactData;
 
 import static org.testng.Assert.assertTrue;
 
-public class ContactHelper {
-  private WebDriver driver;
-  private boolean acceptNextAlert = true;
+public class ContactHelper extends HelperBase {
   public ContactHelper(WebDriver driver) {
-    this.driver = driver;
+    super (driver);
   }
   public void submitContactCreation() {
-    driver.findElement(By.xpath("//div[@id='content']/form/input[21]")).click();
+    click(By.xpath("//div[@id='content']/form/input[21]"));
   }
 
   public void fillContactForm(ContactData contactData) {
-    driver.findElement(By.name("firstname")).click();
-    driver.findElement(By.name("firstname")).clear();
-    driver.findElement(By.name("firstname")).sendKeys(contactData.firstname());
-    driver.findElement(By.name("lastname")).click();
-    driver.findElement(By.name("lastname")).clear();
-    driver.findElement(By.name("lastname")).sendKeys(contactData.lastname());
-    driver.findElement(By.name("mobile")).click();
-    driver.findElement(By.name("mobile")).clear();
-    driver.findElement(By.name("mobile")).sendKeys(contactData.mobile());
-    driver.findElement(By.name("email")).click();
-    driver.findElement(By.name("email")).clear();
-    driver.findElement(By.name("email")).sendKeys(contactData.email());
+    type(By.name("firstname"),contactData.firstname());
+    type(By.name("lastname"),contactData.lastname());
+    type(By.name("mobile"),contactData.mobile());
+    type(By.name("email"),contactData.email());
   }
 
   public void initContactCreation() {
-    driver.findElement(By.linkText("add new")).click();
+    click(By.linkText("add new"));
   }
 
   public void acceptContactDeletion() {
@@ -42,25 +32,11 @@ public class ContactHelper {
   }
 
   public void deleteSelectedContacts() {
-    driver.findElement(By.xpath("//input[@value='Delete']")).click();
+    click(By.xpath("//input[@value='Delete']"));
   }
 
   public void selectContact() {
-    driver.findElement(By.name("selected[]")).click();
-  }
-  private String closeAlertAndGetItsText() {
-    try {
-      Alert alert = driver.switchTo().alert();
-      String alertText = alert.getText();
-      if (acceptNextAlert) {
-        alert.accept();
-      } else {
-        alert.dismiss();
-      }
-      return alertText;
-    } finally {
-      acceptNextAlert = true;
-    }
+    click(By.name("selected[]"));
   }
 
 }

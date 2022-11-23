@@ -8,19 +8,18 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 
-public class NavigationHelper {
-  private WebDriver driver;
+public class NavigationHelper extends HelperBase {
 
   public NavigationHelper(WebDriver driver) {
-    this.driver = driver;
+    super(driver);
   }
 
   public void gotoGroupPage() {
-    driver.findElement(By.linkText("groups")).click();
+    click(By.linkText("groups"));
   }
   public void returnToHomepage() {
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("home")));
-    driver.findElement(By.linkText("home")).click();
+    click(By.linkText("home"));
   }
 }
