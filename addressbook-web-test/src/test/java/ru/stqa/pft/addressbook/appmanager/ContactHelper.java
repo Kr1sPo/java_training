@@ -31,8 +31,8 @@ public class ContactHelper extends HelperBase {
     click(By.xpath("//input[@value='Delete']"));
   }
 
-  public void selectContact() {
-    click(By.name("selected[]"));
+  public void selectContact(int index) {
+    driver.findElements(By.name("selected[]")).get(index).click();
   }
 
   public void initContactModification() {
