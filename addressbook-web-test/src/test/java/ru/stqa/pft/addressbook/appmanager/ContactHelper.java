@@ -18,10 +18,10 @@ public class ContactHelper extends HelperBase {
   }
 
   public void fillContactForm(ContactData contactData) {
-    type(By.name("firstname"),contactData.firstname());
-    type(By.name("lastname"),contactData.lastname());
-    type(By.name("mobile"),contactData.mobile());
-    type(By.name("email"),contactData.email());
+    type(By.name("firstname"),contactData.getFirstName());
+    type(By.name("lastname"),contactData.getLastName());
+    type(By.name("mobile"),contactData.getMobile());
+    type(By.name("email"),contactData.getEmail());
   }
 
   public void initContactCreation() {
@@ -67,7 +67,8 @@ public class ContactHelper extends HelperBase {
     List<WebElement> elements = driver.findElements(By.cssSelector("tr[name='entry']"));
     for (WebElement element:elements){
       String lastname= element.findElement(By.cssSelector("tr[name='entry'] td:nth-child(2)")).getText();
-      ContactData contact = new ContactData(null, lastname, null, null);
+      String firstname= element.findElement(By.cssSelector("tr[name='entry'] td:nth-child(3)")).getText();
+      ContactData contact = new ContactData(firstname, lastname, null, null);
       contacts.add(contact);
     }
     return contacts;
