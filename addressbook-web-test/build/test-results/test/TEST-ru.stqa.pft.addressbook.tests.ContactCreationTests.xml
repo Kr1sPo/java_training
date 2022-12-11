@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ru.stqa.pft.addressbook.tests.ContactCreationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-12-11T17:08:13" hostname="DESKTOP-GOV6LDQ" time="3.957">
+  <properties/>
+  <testcase name="testContactCreation" classname="ru.stqa.pft.addressbook.tests.ContactCreationTests" time="3.957"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[1670778486655	geckodriver	INFO	Listening on 127.0.0.1:22673
+1670778487162	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "5518" "--remote-allow-hosts" "localhost" "--remote-allow-origins" "http://127.0.0.1:5518/,http://localhost:5518/,http://[::1]:5518/" "-no-remote" "-profile" "C:\\Users\\SHATUN~1\\AppData\\Local\\Temp\\rust_mozprofiled5B3Ee"
+1670778488109	Marionette	INFO	Marionette enabled
+1670778488128	Marionette	INFO	Listening on port 52999
+Read port: 52999
+WebDriver BiDi listening on ws://127.0.0.1:5518
+1670778488550	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\SHATUN~1\\AppData\\Local\\Temp\\rust_mozprofiled5B3Ee\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:5518/devtools/browser/43a3951b-d6be-4006-b14c-905d9447f91c
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost."
+]]></system-err>
+</testsuite>
