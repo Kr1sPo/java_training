@@ -5,10 +5,6 @@ import java.util.Objects;
 public class GroupData {
   private int id;
 
-  public void setId(int id) {
-    this.id = id;
-  }
-
   private final String name;
   private final String header;
   private final String footer;
