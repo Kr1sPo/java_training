@@ -52,7 +52,12 @@ public class ContactHelper extends HelperBase {
     fillContactForm(contact);
     submitContactCreation();
   }
-
+  public void modifyContact(int index, ContactData contact) {
+    selectContact(index);
+    initContactModification(index);
+    fillContactForm(contact);
+    submitContactModification();
+  }
   public boolean isThereAContact() {
     return isElementPresent(By.name("selected[]"));
   }
@@ -66,8 +71,8 @@ public class ContactHelper extends HelperBase {
     List<WebElement> elements = driver.findElements(By.cssSelector("tr[name='entry']"));
     for (WebElement element:elements){
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
-      String lastname= element.findElement(By.cssSelector("tr[name='entry'] td:nth-child(2)")).getText();
-      String firstname= element.findElement(By.cssSelector("tr[name='entry'] td:nth-child(3)")).getText();
+      String lastname= element.findElement(By.cssSelector("td:nth-child(2)")).getText();
+      String firstname= element.findElement(By.cssSelector("td:nth-child(3)")).getText();
       ContactData contact = new ContactData(id,firstname, lastname, null, null);
       contacts.add(contact);
     }
