@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
+import ru.stqa.pft.addressbook.model.Groups;
 
 import java.util.HashSet;
 import java.util.List;
@@ -51,18 +52,21 @@ public class ContactHelper extends HelperBase {
     initContactCreation();
     fillContactForm(contact);
     submitContactCreation();
+    contactCache=null;
   }
   public void modifyContact(ContactData contact) {
     selectContactById(contact.getId());
     initContactModificationById(contact.getId());
     fillContactForm(contact);
     submitContactModification();
+    contactCache=null;
   }
 
   public void delete(ContactData contact) {
     selectContactById(contact.getId());
     deleteSelectedContacts();
     acceptContactDeletion();
+    contactCache=null;
   }
 
   public boolean isThereAContact() {
@@ -72,16 +76,19 @@ public class ContactHelper extends HelperBase {
   public int getContactCount() {
     return driver.findElements(By.name("selected[]")).size();
   }
-
+  private Contacts contactCache = null;
   public Contacts all() {
-    Contacts contacts = new Contacts();
+    if(contactCache!=null){
+      return new Contacts(contactCache);
+    }
+    contactCache = new Contacts();
     List<WebElement> elements = driver.findElements(By.cssSelector("tr[name='entry']"));
     for (WebElement element:elements){
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
       String lastname= element.findElement(By.cssSelector("td:nth-child(2)")).getText();
       String firstname= element.findElement(By.cssSelector("td:nth-child(3)")).getText();
-      contacts.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname));
+      contactCache.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname));
     }
-    return contacts;
+    return new Contacts(contactCache);
   }
 }
