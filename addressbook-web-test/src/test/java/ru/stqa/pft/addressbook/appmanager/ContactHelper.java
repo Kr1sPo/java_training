@@ -19,7 +19,9 @@ public class ContactHelper extends HelperBase {
   public void fillContactForm(ContactData contactData) {
     type(By.name("firstname"),contactData.getFirstName());
     type(By.name("lastname"),contactData.getLastName());
-    type(By.name("mobile"),contactData.getMobile());
+    type(By.name("home"),contactData.getHomePhone());
+    type(By.name("mobile"),contactData.getMobilePhone());
+    type(By.name("work"),contactData.getWorkPhone());
     type(By.name("email"),contactData.getEmail());
   }
 
@@ -39,7 +41,7 @@ public class ContactHelper extends HelperBase {
     driver.findElement(By.cssSelector("input[value='"+id+"']")).click();
   }
   private void initContactModificationById(int id) {
-    driver.findElement(By.xpath("//*[@id='" + id + "']/ancestor::tr[@name='entry']//img[@alt='Edit']")).click();
+    driver.findElement(By.xpath(String.format("//*[@id='%s']/ancestor::tr[@name='entry']//img[@alt='Edit']",id))).click();
   }
   public void submitContactModification() {
     click(By.name("update"));
@@ -87,5 +89,17 @@ public class ContactHelper extends HelperBase {
       contactCache.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname));
     }
     return new Contacts(contactCache);
+  }
+
+  public ContactData infoFromEditForm(ContactData contact) {
+    initContactModificationById(contact.getId());
+    String firstname = driver.findElement(By.name("firstname")).getAttribute("value");
+    String lastname = driver.findElement(By.name("lastname")).getAttribute("value");
+    String home = driver.findElement(By.name("home")).getAttribute("value");
+    String mobile = driver.findElement(By.name("mobile")).getAttribute("value");
+    String work = driver.findElement(By.name("work")).getAttribute("value");
+    driver.navigate().back();
+    return new ContactData().withId(contact.getId()).withFirstname(firstname).withLastname(lastname)
+            .withHomePhone(home).withMobilePhone(mobile).withWorkPhone(work);
   }
 }
