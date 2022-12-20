@@ -89,7 +89,7 @@ public class ContactHelper extends HelperBase {
       String allPhones = element.findElement(By.cssSelector("td:nth-child(6)")).getText();
       String[] phones = allPhones.split("\n");
       contactCache.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname)
-              .withHomePhone(phones[0]).withMobilePhone(phones[1]).withWorkPhone(phones[2]));
+              .withAllPhones(allPhones));
     }
     return new Contacts(contactCache);
   }
