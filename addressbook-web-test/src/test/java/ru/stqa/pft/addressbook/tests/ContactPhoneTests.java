@@ -16,8 +16,9 @@ public class ContactPhoneTests extends TestBase{
   public void ensurePreconditions(){
     if(app.contact().all().size()==0){
       app.contact().create(new ContactData()
-              .withFirstname("Ivan").withLastname("Ivanov").withMobilePhone("89274223344")
-              .withHomePhone("123456").withWorkPhone("777543").withEmail("ivanivanov@gmail.com"));
+              .withFirstname("Ivan").withLastname("Ivanov")
+              .withMobilePhone("89274223344").withHomePhone("123456").withWorkPhone("777543")
+              .withEmail1("ivanivanov1@gmail.com").withEmail2("ivanivanov2@gmail.com").withEmail3("ivanivanov3@gmail.com"));
     }
     app.goTo().homepage();
   }
@@ -29,12 +30,17 @@ public class ContactPhoneTests extends TestBase{
     ContactData contactInfoFromEditForm = app.contact().infoFromEditForm(contact);
 
     assertThat(contact.getAllPhones(), equalTo(mergePhones(contactInfoFromEditForm)));
+    assertThat(contact.getAllEmails(), equalTo(mergeEmails(contactInfoFromEditForm)));
   }
-
   private String mergePhones(ContactData contact) {
     return Arrays.asList(contact.getHomePhone(), contact.getMobilePhone(), contact.getWorkPhone())
             .stream().filter((s) -> !s.equals(""))
             .map(ContactPhoneTests::cleaned)
+            .collect(Collectors.joining("\n"));
+  }
+  private String mergeEmails(ContactData contact) {
+    return Arrays.asList(contact.getEmail1(), contact.getEmail2(), contact.getEmail3())
+            .stream().filter((s) -> !s.equals(""))
             .collect(Collectors.joining("\n"));
   }
 
