@@ -10,6 +10,7 @@ dependencies {
     implementation 'org.seleniumhq.selenium:selenium-java:4.6.0'
     implementation 'org.hamcrest:java-hamcrest:2.0.0.0'
     implementation group: 'org.hamcrest', name: 'hamcrest', version: '2.2'
+    implementation group: 'com.beust', name: 'jcommander', version: '1.82'
 }
 
 test {
