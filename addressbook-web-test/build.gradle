@@ -9,6 +9,7 @@ dependencies {
     testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: '2.0.3'
     implementation 'org.seleniumhq.selenium:selenium-java:4.6.0'
     implementation 'org.hamcrest:java-hamcrest:2.0.0.0'
+    implementation group: 'org.hamcrest', name: 'hamcrest', version: '2.2'
 }
 
 test {
