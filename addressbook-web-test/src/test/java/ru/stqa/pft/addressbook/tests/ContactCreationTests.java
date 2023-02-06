@@ -1,8 +1,10 @@
 package ru.stqa.pft.addressbook.tests;
 
+import com.thoughtworks.xstream.XStream;
 import org.testng.annotations.*;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
+import ru.stqa.pft.addressbook.model.GroupData;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -16,16 +18,18 @@ import static org.testng.Assert.assertEquals;
 public class ContactCreationTests extends TestBase {
   @DataProvider
   public Iterator<Object[]> validContacts () throws IOException {
-    List<Object[]> list = new ArrayList<Object[]>();
-    BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/contacts.csv")));
+    BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/contacts.xml")));
+    String xml = "";
     String line = reader.readLine();
     while (line!=null){
-      String[] split = line.split(";");
-      list.add(new Object[]{new ContactData().withFirstname(split[0]).withLastname(split[1])
-              .withMobilePhone(split[2]).withEmail1(split[3])});
+      xml+=line;
       line = reader.readLine();
     }
-    return list.iterator();
+    XStream xstream = new XStream();
+    xstream.processAnnotations(ContactData.class);
+    xstream.allowTypes(new Class[] {ContactData.class});
+    List<ContactData> contacts = (List<ContactData>) xstream.fromXML(xml);
+    return contacts.stream().map((c) -> new Object[]{c}).toList().iterator();
   }
   @Test (dataProvider = "validContacts")
   public void testContactCreation(ContactData contact) throws Exception {
