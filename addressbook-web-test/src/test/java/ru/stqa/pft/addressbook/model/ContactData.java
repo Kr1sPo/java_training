@@ -2,34 +2,68 @@ package ru.stqa.pft.addressbook.model;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import com.thoughtworks.xstream.converters.basic.DateConverter;
+import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Type;
+import org.hibernate.metamodel.mapping.Bindable;
 
 import java.io.File;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 
 @XStreamAlias("contact")
+@Entity
+@Table(name="addressbook")
 public class ContactData {
   @XStreamOmitField
+  @Id
+  @Column(name="id")
   private int id = Integer.MAX_VALUE;
+  @Column(name="firstname")
   private String firstname;
+  @Column(name="lastname")
   private String lastname;
+  @Transient
+  private String group;
+  @Column(name="mobile")
   private String mobilePhone;
+  @Column(name="home")
   private String homePhone;
+  @Column(name="work")
   private String workPhone;
+  @Transient
   private String allPhones;
+  @Column(name="email")
   private String email1;
+  @Column(name="email2")
   private String email2;
+  @Column(name="email3")
   private String email3;
-
+  @Transient
   private String allEmails;
+  @Column(name="address")
   private String address;
-  private File photo;
+  @Column(name="photo")
+  private String photo;
+  
+  @Column(name="deprecated", columnDefinition="DATETIME")
+  @Temporal(TemporalType.TIMESTAMP)
+  //@Convert(converter = org.hibernate.type.NumericBooleanConverter.class)
+  //@Convert(converter = Converter)
+  //@Temporal(TemporalType.TIMESTAMP)
+  private String deprecated;
+
 
   public File getPhoto() {
-    return photo;
+    return new File(photo);
   }
 
   public ContactData withPhoto(File photo) {
-    this.photo = photo;
+    this.photo = photo.getPath();
     return this;
   }
 
