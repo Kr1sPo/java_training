@@ -13,6 +13,7 @@ dependencies {
     implementation group: 'com.beust', name: 'jcommander', version: '1.82'
     implementation group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.20'
     implementation 'ch.qos.logback:logback-classic:1.4.5'
+    implementation 'mysql:mysql-connector-java:8.0.32'
 }
 
 task testGroups (type:Test) {
