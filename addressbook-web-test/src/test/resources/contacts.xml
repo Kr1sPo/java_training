@@ -7,20 +7,4 @@
     <workPhone>workPhone 0</workPhone>
     <email1>email 0</email1>
   </contact>
-  <contact>
-    <firstname>firstname 1</firstname>
-    <lastname>lastname 1</lastname>
-    <mobilePhone>mobilePhone 1</mobilePhone>
-    <homePhone>homePhone 1</homePhone>
-    <workPhone>workPhone 1</workPhone>
-    <email1>email 1</email1>
-  </contact>
-  <contact>
-    <firstname>firstname 2</firstname>
-    <lastname>lastname 2</lastname>
-    <mobilePhone>mobilePhone 2</mobilePhone>
-    <homePhone>homePhone 2</homePhone>
-    <workPhone>workPhone 2</workPhone>
-    <email1>email 2</email1>
-  </contact>
 </list>

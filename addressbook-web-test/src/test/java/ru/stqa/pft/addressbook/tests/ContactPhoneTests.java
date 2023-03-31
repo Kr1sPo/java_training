@@ -19,7 +19,7 @@ public class ContactPhoneTests extends TestBase{
               .withFirstname("Ivan").withLastname("Ivanov")
               .withAddress("Russian Federation, Republic of Tatarstan, Kazan, Pushkin st. 13/54 building 5, 177 apartment")
               .withMobilePhone("89274223344").withHomePhone("123456").withWorkPhone("777543")
-              .withEmail1("ivanivanov1@gmail.com").withEmail2("ivanivanov2@gmail.com").withEmail3("ivanivanov3@gmail.com"));
+              .withEmail1("ivanivanov1@gmail.com").withEmail2("ivanivanov2@gmail.com").withEmail3("ivanivanov3@gmail.com"), false);
     }
     app.goTo().homepage();
   }

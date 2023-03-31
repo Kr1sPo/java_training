@@ -4,20 +4,26 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import com.thoughtworks.xstream.converters.basic.DateConverter;
 import jakarta.persistence.*;
+import net.bytebuddy.utility.nullability.MaybeNull;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
 import org.hibernate.metamodel.mapping.Bindable;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @XStreamAlias("contact")
 @Entity
 @Table(name="addressbook")
+//@SecondaryTable(name="address_in_groups",
+        //pkJoinColumns=@PrimaryKeyJoinColumn(name="id"))
 public class ContactData {
   @XStreamOmitField
   @Id
@@ -27,8 +33,6 @@ public class ContactData {
   private String firstname;
   @Column(name = "lastname")
   private String lastname;
-  @Transient
-  private String group;
 
   @Column(name = "mobile")
   private String mobilePhone;
@@ -56,6 +60,10 @@ public class ContactData {
   @Temporal(TemporalType.TIMESTAMP)
   private String deprecated;
 
+  @ManyToMany (fetch = FetchType.EAGER)
+  @JoinTable(name="address_in_groups",
+          joinColumns = @JoinColumn(name="id"), inverseJoinColumns = @JoinColumn(name="group_id"))
+  private  Set<GroupData> groups = new HashSet<GroupData>();
 
   public File getPhoto() {
     return photo;
@@ -77,15 +85,7 @@ public class ContactData {
   public String getLastName() {
     return lastname;
   }
-/*
   public String getMobilePhone() {
-    if (this.mobilePhone == null)
-      return "";
-    else
-      return this.mobilePhone;
-  }
-*/
-public String getMobilePhone() {
   return mobilePhone;
 }
   public String getHomePhone() {
@@ -120,6 +120,10 @@ public String getMobilePhone() {
     return address;
   }
 
+  public Groups getGroups() {
+    return new Groups(groups);
+  }
+
   public ContactData withId(int id) {
     this.id = id;
     return this;
@@ -128,32 +132,6 @@ public String getMobilePhone() {
   public ContactData withFirstname(String firstname) {
     this.firstname = firstname;
     return this;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-
-    ContactData that = (ContactData) o;
-
-    if (id != that.id) return false;
-    if (!Objects.equals(firstname, that.firstname)) return false;
-    if (!Objects.equals(lastname, that.lastname)) return false;
-    if (!Objects.equals(mobilePhone, that.mobilePhone)) return false;
-    if (!Objects.equals(homePhone, that.homePhone)) return false;
-    return Objects.equals(workPhone, that.workPhone);
-  }
-
-  @Override
-  public int hashCode() {
-    int result = id;
-    result = 31 * result + (firstname != null ? firstname.hashCode() : 0);
-    result = 31 * result + (lastname != null ? lastname.hashCode() : 0);
-    result = 31 * result + (mobilePhone != null ? mobilePhone.hashCode() : 0);
-    result = 31 * result + (homePhone != null ? homePhone.hashCode() : 0);
-    result = 31 * result + (workPhone != null ? workPhone.hashCode() : 0);
-    return result;
   }
 
   public ContactData withLastname(String lastname) {
@@ -215,7 +193,46 @@ public String getMobilePhone() {
             ", mobilePhone='" + mobilePhone + '\'' +
             ", homePhone='" + homePhone + '\'' +
             ", workPhone='" + workPhone + '\'' +
+            ", groups=" + groups +
             '}';
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    ContactData that = (ContactData) o;
+
+    if (id != that.id) return false;
+    if (!Objects.equals(firstname, that.firstname)) return false;
+    if (!Objects.equals(lastname, that.lastname)) return false;
+    if (!Objects.equals(mobilePhone, that.mobilePhone)) return false;
+    if (!Objects.equals(homePhone, that.homePhone)) return false;
+    /*
+    if (!Objects.equals(workPhone, that.workPhone)) return false;
+    return Objects.equals(groups, that.groups);
+    */
+    return Objects.equals(workPhone, that.workPhone);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = id;
+    result = 31 * result + (firstname != null ? firstname.hashCode() : 0);
+    result = 31 * result + (lastname != null ? lastname.hashCode() : 0);
+    result = 31 * result + (mobilePhone != null ? mobilePhone.hashCode() : 0);
+    result = 31 * result + (homePhone != null ? homePhone.hashCode() : 0);
+    result = 31 * result + (workPhone != null ? workPhone.hashCode() : 0);
+    //result = 31 * result + (groups != null ? groups.hashCode() : 0);
+    return result;
+  }
+
+  public ContactData inGroup(GroupData group) {
+    if (groups == null) {
+      groups = new HashSet<GroupData>();
+    }
+    groups.add(group);
+    return this;
+  }
 }

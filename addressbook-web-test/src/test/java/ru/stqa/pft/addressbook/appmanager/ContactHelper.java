@@ -3,6 +3,8 @@ package ru.stqa.pft.addressbook.appmanager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
 
@@ -16,7 +18,7 @@ public class ContactHelper extends HelperBase {
     click(By.xpath("//div[@id='content']/form/input[21]"));
   }
 
-  public void fillContactForm(ContactData contactData) {
+  public void fillContactForm(ContactData contactData, boolean creation) {
     type(By.name("firstname"),contactData.getFirstName());
     type(By.name("lastname"),contactData.getLastName());
     type(By.name("address"),contactData.getAddress());
@@ -27,6 +29,15 @@ public class ContactHelper extends HelperBase {
     type(By.name("mobile"),contactData.getMobilePhone());
     type(By.name("work"),contactData.getWorkPhone());
     attach(By.name("photo"),contactData.getPhoto());
+
+    if (creation){
+      if (contactData.getGroups().size()>0){
+        Assert.assertTrue(contactData.getGroups().size()==1);
+        new Select(driver.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroups().iterator().next().getName());
+      } else {
+        Assert.assertFalse(isElementPresent(By.name("new_group")));
+      }
+    }
 
   }
 
@@ -52,16 +63,16 @@ public class ContactHelper extends HelperBase {
     click(By.name("update"));
   }
 
-  public void create(ContactData contact) {
+  public void create(ContactData contact, boolean groupCreation) {
     initContactCreation();
-    fillContactForm(contact);
+    fillContactForm(contact,groupCreation);
     submitContactCreation();
     contactCache=null;
   }
-  public void modifyContact(ContactData contact) {
+  public void modifyContact(ContactData contact, boolean groupCreation) {
     selectContactById(contact.getId());
     initContactModificationById(contact.getId());
-    fillContactForm(contact);
+    fillContactForm(contact,groupCreation);
     submitContactModification();
     contactCache=null;
   }
@@ -71,6 +82,26 @@ public class ContactHelper extends HelperBase {
     deleteSelectedContacts();
     acceptContactDeletion();
     contactCache=null;
+  }
+
+  public void addToGroup(ContactData contact) {
+    selectContactById(contact.getId());
+    //click(By.xpath("//input[@value='Delete']"));
+    //click(By.name("to_group"));
+    addGroupToSelectedContact(contact);
+    //deleteSelectedContacts();
+    //acceptContactDeletion();
+    contactCache=null;
+  }
+
+  public void addGroupToSelectedContact(ContactData contact) {
+    if (contact.getGroups().size()>0){
+      //Assert.assertTrue(contact.getGroups().size()==1);
+      new Select(driver.findElement(By.name("to_group"))).selectByVisibleText(contact.getGroups().iterator().next().getName());
+    } else {
+      Assert.assertFalse(isElementPresent(By.name("new_group")));
+    }
+    click(By.name("add"));
   }
 
   public boolean isThereAContact() {
